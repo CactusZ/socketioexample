@@ -10,5 +10,9 @@ Additional improvements (from Homework section):
 4) Nickname support
 5) Don’t send the same message to the user that sent it himself. Instead, append the message directly as soon as he presses enter.
 
-To run application write 
+
+To install application execute
+`npm install`
+
+To run application execute
 ` node index.js ` and connect to `localhost:3000` via browser.
