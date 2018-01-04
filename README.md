@@ -1,13 +1,15 @@
 # chat-example
 
-This is the source code for a very simple chat example used for
+This is the source code for a very simple chat exampleused for
 the [Getting Started](http://socket.io/get-started/chat/) guide
 of the Socket.IO website.
 
-Please refer to it to learn how to run this application.
+Additional improvements (from Homework section):
+1) Online user list
+2) "User is typing" functionality
+3) System notifications when user logins/disconnects
+4) Nickname support
+5) Don’t send the same message to the user that sent it himself. Instead, append the message directly as soon as he presses enter.
 
-You can also spin up a free Heroku dyno to test it out:
-
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/socketio/chat-example)
-
-Besides, the application is deployed on [Now](https://zeit.co/now): https://socketio-chat-example.now.sh/
+To run application write 
+` node index.js ` and connect to `localhost:3000` via browser.
