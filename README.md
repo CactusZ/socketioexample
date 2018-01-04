@@ -1,4 +1,4 @@
-# chat-example
+# Socket.io chat example
 
 This is the source code for a very simple chat exampleused for
 the [Getting Started](http://socket.io/get-started/chat/) guide
