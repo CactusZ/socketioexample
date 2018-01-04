@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Socket.IO chat</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font: 13px Helvetica, Arial;
+    }
+
+    form {
+      background: #000;
+      padding: 3px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    form input {
+      border: 0;
+      padding: 10px;
+      width: 90%;
+      margin-right: .5%;
+    }
+
+    form button {
+      width: 9%;
+      background: rgb(130, 224, 255);
+      border: none;
+      padding: 10px;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #messages li {
+      padding: 5px 10px;
+    }
+
+    #messages li:nth-child(odd) {
+      background: #eee;
+    }
+
+    #istyping {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #istyping li {
+      padding: 5px 10px;
+    }
+
+    #istyping li:nth-child(odd) {
+      background: #eee;
+    }
+
+    #istyping {
+      margin-bottom: 40px
+    }
+
+    #chat {
+      width: 80%;
+      float: left;
+    }
+
+    #users {
+      border: solid black 2px;
+      overflow: hidden;
+      min-height: 100%;
+    }
+
+    #userList {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #userList li {
+      padding: 5px 10px;
+    }
+
+    #userList li:nth-child(odd) {
+      background: #eee;
+    }
+
+    #app {
+      height: 100vh;
+    }
+
+    #users h1 {
+      text-align: center
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div id="chat">
+      <ul id="messages"></ul>
+      <ul id="istyping"></ul>
+    </div>
+    <div id="users">
+      <h1>Online users:</h1>
+      <ul id="userList">
+
+      </ul>
+    </div>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+    $(function() {
+      let username = prompt("Enter username:", "");
+      var socket = io();
+      socket.emit('nickname', username);
+      $('form').submit(function() {
+        socket.emit('chat message', $('#m').val());
+        let nickname = $("<b></b>").text(username);
+        let message = ": " + $('#m').val();
+        $('#messages').append($('<li>').html(nickname).append(message));
+        $('#m').val('');
+        socket.emit('is typing', '');
+        return false;
+      });
+
+      $('#m').keydown(() => {
+        socket.emit('is typing', $('#m').val());
+      });
+
+      socket.on('chat message', function(msg) {
+        let message = msg;
+        let nickname = $("<b></b>").text(message.nickname);
+        $('#messages').append($('<li>').html(nickname).append(": ", message.message));
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      socket.on('is typing', function(user) {
+        if (user.status) {
+          if (!$('#' + user.nickname + '_typing').length)
+            $('#istyping').append($('<li></li>').text('[' + user.nickname + ' is typing]').attr('id', user.nickname + '_typing'));
+        } else {
+          $('#' + user.nickname + '_typing').remove();
+        }
+      });
+
+      socket.on('user list', function(users) {
+        $("#userList").html("");
+        users.forEach((user) => {
+          $("#userList").append($("<li>").text(user));
+        });
+      });
+
+    });
+  </script>
+</body>
+
+</html>
