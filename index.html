@@ -132,7 +132,7 @@
         socket.emit('chat message', $('#m').val());
         let nickname = $("<b></b>").text(username);
         let message = ": " + $('#m').val();
-        $('#messages').append($('<li>').html(nickname).append(message));
+        $('#messages').append($('<li>').append(nickname,message));
         $('#m').val('');
         socket.emit('is typing', '');
         return false;
@@ -145,7 +145,7 @@
       socket.on('chat message', function(msg) {
         let message = msg;
         let nickname = $("<b></b>").text(message.nickname);
-        $('#messages').append($('<li>').html(nickname).append(": ", message.message));
+        $('#messages').append($('<li>').append(nickname, ": ", message.message));
         window.scrollTo(0, document.body.scrollHeight);
       });
 
